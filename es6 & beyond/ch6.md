@@ -173,14 +173,11 @@ class MyCoolArray extends Array {
 	..
 }
 
-Array.of( 1, 2 ) instanceof Array;					// true
-Array.from( [1, 2] ) instanceof Array;				// true
-
-MyCoolArray.of( 1, 2 ) instanceof Array;			// false
-MyCoolArray.from( [1, 2] ) instanceof Array;		// false
-
-MyCoolArray.of( 1, 2 ) instanceof MyCoolArray;		// true
 MyCoolArray.from( [1, 2] ) instanceof MyCoolArray;	// true
+
+Array.from(
+	MyCoolArray.from( [1, 2] )
+) instanceof MyCoolArray;							// false
 ```
 
 Both `of(..)` and `from(..)` use the constructor that they're accessed from to construct the array. So if you use the base `Array.of(..)` you'll get an `Array` instance, but if you use `MyCoolArray.of(..)`, you'll get a `MyCoolArray` instance.
@@ -216,11 +213,6 @@ class MyCoolArray extends Array {
 }
 
 var x = new MyCoolArray( 1, 2, 3 );
-
-x.slice( 1 ) instanceof Array;						// true
-
-MyCoolArray.from( x ) instanceof Array;				// false
-MyCoolArray.of( [2, 3] ) instanceof Array;			// false
 
 MyCoolArray.from( x ) instanceof MyCoolArray;		// true
 MyCoolArray.of( [2, 3] ) instanceof MyCoolArray;	// true
@@ -376,7 +368,7 @@ points.findIndex( function matcher(point) {
 
 Don't use `findIndex(..) != -1` (the way it's always been done with `indexOf(..)`) to get a boolean from the search, because `some(..)` already yields the `true`/`false` you want. And don't do `a[ a.findIndex(..) ]` to get the matched value, because that's what `find(..)` accomplishes. And finally, use `indexOf(..)` if you need the index of a strict match, or `findIndex(..)` if you need the index of a more customized match.
 
-**Note:** As with other array methods that take callbacks, `find(..)` takes an optional second argument that if set will specify the `this` binding for the callback passed as the first argument. Otherwise, `this` will be `undefined`.
+**Note:** As with other array methods that take callbacks, `findIndex(..)` takes an optional second argument that if set will specify the `this` binding for the callback passed as the first argument. Otherwise, `this` will be `undefined`.
 
 ### `entries()`, `values()`, `keys()` Prototype Methods
 
@@ -656,7 +648,7 @@ You may still prefer the coercion, in which case using the global `isFinite(..)`
 
 ### Integer-Related Static Functions
 
-JavaScript number valuess are always floating point (IEE-754). So the notion of determining if a number is an "integer" is not about checking its type, because JS makes no such distinction.
+JavaScript number values are always floating point (IEEE-754). So the notion of determining if a number is an "integer" is not about checking its type, because JS makes no such distinction.
 
 Instead, you need to check if there's any non-zero decimal portion of the value. The easiest way to do that has commonly been:
 

@@ -245,7 +245,7 @@ Promise.race( [p2,p1,v3] )
 	console.log( val );				// 42
 } );
 
-Promise.race( [p2,p1,v3,p4] )
+Promise.race( [p2,p4] )
 .then(
 	function fulfilled(val){
 		// never gets here
@@ -266,7 +266,7 @@ It *is* possible to express a series of promises in a chain to represent the asy
 step1()
 .then(
 	step2,
-	step2Failed
+	step1Failed
 )
 .then(
 	function step3(msg) {
@@ -288,14 +288,15 @@ Consider the previous snippet's async flow control expressed with a generator:
 
 ```js
 function *main() {
-	var ret = yield step1();
 
 	try {
-		ret = yield step2( ret );
+		var ret = yield step1();
 	}
 	catch (err) {
-		ret = yield step2Failed( err );
+		ret = yield step1Failed( err );
 	}
+
+	ret = yield step2( ret );
 
 	// step 3
 	ret = yield Promise.all( [

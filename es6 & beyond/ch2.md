@@ -59,7 +59,7 @@ let (a = 2, b, c) {
 }
 ```
 
-That form is what I'd called *explicit* block scoping, whereas the `let ..` declaration form that mirrors `var` is more *implicit*, as it kind of hijacks whatever `{ .. }` pair it's found in. Generally developers find *explicit* mechanisms a bit more preferable than *implicit* mechanisms, and I claim this is one of those cases.
+That form is what I call *explicit* block scoping, whereas the `let ..` declaration form that mirrors `var` is more *implicit*, as it kind of hijacks whatever `{ .. }` pair it's found in. Generally developers find *explicit* mechanisms a bit more preferable than *implicit* mechanisms, and I claim this is one of those cases.
 
 If you compare the previous two snippet forms, they're very similar, and in my opinion both qualify stylistically as *explicit* block scoping. Unfortunately, the `let (..) { .. }` form, the most *explicit* of the options, was not adopted in ES6. That may be revisited post-ES6, but for now the former option is our best bet, I think.
 
@@ -1135,22 +1135,22 @@ So let's examine if ES6 object destructuring with defaults can help at all:
 ```js
 config.options = config.options || {};
 config.log = config.log || {};
-{
+({
 	options: {
-		remove: config.options.remove = default.options.remove,
-		enable: config.options.enable = default.options.enable,
-		instance: config.options.instance = default.options.instance
+		remove: config.options.remove = defaults.options.remove,
+		enable: config.options.enable = defaults.options.enable,
+		instance: config.options.instance = defaults.options.instance
 	} = {},
 	log: {
-		warn: config.log.warn = default.log.warn,
-		error: config.log.error = default.log.error
+		warn: config.log.warn = defaults.log.warn,
+		error: config.log.error = defaults.log.error
 	} = {}
-} = config;
+} = config);
 ```
 
 Not as nice as the false promise of `Object.assign(..)` (being that it's shallow only), but it's better than the manual approach by a fair bit, I think. It is still unfortunately verbose and repetitive, though.
 
-The previous snippet's approach works because I'm hacking the destructuring and defaults mechansim to do the property `=== undefined` checks and assignment decisions for me. It's a trick in that I'm destructuring `config` (see the `= config` at the end of the snippet), but I'm reassigning all the destructured values right back into `config`, with the `config.options.enable` assignment references.
+The previous snippet's approach works because I'm hacking the destructuring and defaults mechanism to do the property `=== undefined` checks and assignment decisions for me. It's a trick in that I'm destructuring `config` (see the `= config` at the end of the snippet), but I'm reassigning all the destructured values right back into `config`, with the `config.options.enable` assignment references.
 
 Still too much, though. Let's see if we can make anything better.
 
@@ -1960,7 +1960,7 @@ So now we can conclude a more nuanced set of rules for when `=>` is appropriate 
 * If you have a short, single-statement inline function expression, where the only statement is a `return` of some computed value, *and* that function doesn't already make a `this` reference inside it, *and* there's no self-reference (recursion, event binding/unbinding), *and* you don't reasonably expect the function to ever be that way, you can probably safely refactor it to be an `=>` arrow function.
 * If you have an inner function expression that's relying on a `var self = this` hack or a `.bind(this)` call on it in the enclosing function to ensure proper `this` binding, that inner function expression can probably safely become an `=>` arrow function.
 * If you have an inner function expression that's relying on something like `var args = Array.prototype.slice.call(arguments)` in the enclosing function to make a lexical copy of `arguments`, that inner function expression can probably safely become an `=>` arrow function.
-* For everything else -- normal function declarations, longer multistatment function expressions, functions that need a lexical name identifier self-reference (recursion, etc.), and any other function that doesn't fit the previous characteristics -- you should probably avoid `=>` function syntax.
+* For everything else -- normal function declarations, longer multistatement function expressions, functions that need a lexical name identifier self-reference (recursion, etc.), and any other function that doesn't fit the previous characteristics -- you should probably avoid `=>` function syntax.
 
 Bottom line: `=>` is about lexical binding of `this`, `arguments`, and `super`. These are intentional features designed to fix some common problems, not bugs, quirks, or mistakes in ES6.
 
@@ -2077,7 +2077,7 @@ JavaScript strings are typically interpreted as sequences of 16-bit characters, 
 
 Prior to ES6, regular expressions could only match based on BMP characters, which means that those extended characters were treated as two separate characters for matching purposes. This is often not ideal.
 
-So, as of ES6, the `u` flag tells a regular expression to process a string with the intepretation of Unicode (UTF-16) characters, such that such an extended character will be matched as a single entity.
+So, as of ES6, the `u` flag tells a regular expression to process a string with the interpretation of Unicode (UTF-16) characters, such that such an extended character will be matched as a single entity.
 
 **Warning:** Despite the name implication, "UTF-16" doesn't strictly mean 16 bits. Modern Unicode uses 21 bits, and standards like UTF-8 and UTF-16 refer roughly to how many bits are used in the representation of a character.
 
@@ -2519,7 +2519,7 @@ s3.charAt( 2 );					// "" <-- unprintable surrogate
 s3.charAt( 3 );					// "" <-- unprintable surrogate
 ```
 
-So, is ES6 giving us a Unicode-aware verison of `charAt(..)`? Unfortunately, no. At the time of this writing, there's a proposal for such a utility that's under consideration for post-ES6.
+So, is ES6 giving us a Unicode-aware version of `charAt(..)`? Unfortunately, no. At the time of this writing, there's a proposal for such a utility that's under consideration for post-ES6.
 
 But with what we explored in the previous section (and of course with the limitations noted thereof!), we can hack an ES6 answer:
 

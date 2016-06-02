@@ -260,7 +260,7 @@ var tasks = {
 
 The iterator on `tasks` steps through functions found in the `actions` array property, if any, and executes them one at a time, passing in whatever arguments you pass to `next(..)`, and returning any return value to you in the standard `IteratorResult` object.
 
-Here's how we could could use this `tasks` queue:
+Here's how we could use this `tasks` queue:
 
 ```js
 tasks.actions.push(
@@ -632,7 +632,7 @@ for (var v of bar()) {
 	console.log( v );
 }
 // 1 2 3
-// x: 4
+// x: { value: 4, done: true }
 ```
 
 While the `1`, `2`, and `3` values are `yield`ed out of `*foo()` and then out of `*bar()`, the `4` value returned from `*foo()` is the completion value of the `yield *foo()` expression, which then gets assigned to `x`.
@@ -1171,7 +1171,7 @@ As you can see, ES6 modules will serve the overall use case of organizing code w
 
 There's a similar, but not fully compatible, module syntax called CommonJS, which is familiar to those in the Node.js ecosystem.
 
-For lack of a more tactful way to say this, in the long run, ES6 modules essentially are bound to supercede all previous formats and standards for modules, even CommonJS, as they are built on syntactic support in the language. This will, in time, inevitably win out as the superior approach, if for no other reason than ubiquity.
+For lack of a more tactful way to say this, in the long run, ES6 modules essentially are bound to supersede all previous formats and standards for modules, even CommonJS, as they are built on syntactic support in the language. This will, in time, inevitably win out as the superior approach, if for no other reason than ubiquity.
 
 We face a fairly long road to get to that point, though. There are literally hundreds of thousands of CommonJS style modules in the server-side JavaScript world, and 10 times that many modules of varying format standards (UMD, AMD, ad hoc) in the browser world. It will take many years for the transitions to make any significant progress.
 
@@ -1183,7 +1183,7 @@ From here on out, my best advice on modules is this: whatever format you've been
 
 ### The New Way
 
-The two main new keywords that enable ES6 classes are `import` and `export`. There's lots of nuance to the syntax, so let's take a deeper look.
+The two main new keywords that enable ES6 modules are `import` and `export`. There's lots of nuance to the syntax, so let's take a deeper look.
 
 **Warning:** An important detail that's easy to overlook: both `import` and `export` must always appear in the top-level scope of their respective usage. For example, you cannot put either an `import` or `export` inside an `if` conditional; they must appear outside of all blocks and functions.
 
@@ -1473,7 +1473,7 @@ foo.baz();
 
 **Note:** The `* as ..` clause requires the `*` wildcard. In other words, you cannot do something like `import { bar, x } as foo from "foo"` to bring in only part of the API but still bind to the `foo` namespace. I would have liked something like that, but for ES6 it's all or nothing with the namespace import.
 
-If the module you're importing with `* as ..` has a default export, it is named `default` in the namespace specified. You can additionaly name the default import outside of the namespace binding, as a top-level identifier. Consider a `"world"` module exported as:
+If the module you're importing with `* as ..` has a default export, it is named `default` in the namespace specified. You can additionally name the default import outside of the namespace binding, as a top-level identifier. Consider a `"world"` module exported as:
 
 ```js
 export default function foo() { .. }
@@ -1899,6 +1899,7 @@ ES6 to the rescue:
 ```js
 class Oops extends Error {
 	constructor(reason) {
+		super(reason);
 		this.oops = reason;
 	}
 }

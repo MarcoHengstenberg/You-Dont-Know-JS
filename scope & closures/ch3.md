@@ -43,7 +43,7 @@ console.log( a, b, c ); // all 3 fail
 
 However, all these identifiers (`a`, `b`, `c`, `foo`, and `bar`) are accessible *inside* of `foo(..)`, and indeed also available inside of `bar(..)` (assuming there are no shadow identifier declarations inside `bar(..)`).
 
-Function scope encourages the idea that all variables belong to the function, and can be used and re-used throughout the entirety of the function (and indeed, accessible even to nested scopes). This design approach can be quite useful, and certainly can make full use of the "dynamic" nature of JavaScript variables to take on values of different types as needed.
+Function scope encourages the idea that all variables belong to the function, and can be used and reused throughout the entirety of the function (and indeed, accessible even to nested scopes). This design approach can be quite useful, and certainly can make full use of the "dynamic" nature of JavaScript variables to take on values of different types as needed.
 
 On the other hand, if you don't take careful precautions, variables existing across the entirety of a scope can lead to some unexpected pitfalls.
 
@@ -91,7 +91,7 @@ function doSomething(a) {
 
 	b = a + doSomethingElse( a * 2 );
 
-	console.log( (b * 3) );
+	console.log( b * 3 );
 }
 
 doSomething( 2 ); // 15
@@ -221,7 +221,7 @@ Anonymous function expressions are quick and easy to type, and many libraries an
 
 2. Without a name, if the function needs to refer to itself, for recursion, etc., the **deprecated** `arguments.callee` reference is unfortunately required. Another example of needing to self-reference is when an event handler function wants to unbind itself after it fires.
 
-3. Anonymous functions omit a name which is often helpful in providing more readable/understandable code. A descriptive name helps self-document the code in question.
+3. Anonymous functions omit a name that is often helpful in providing more readable/understandable code. A descriptive name helps self-document the code in question.
 
 **Inline function expressions** are powerful and useful -- the question of anonymous vs. named doesn't detract from that. Providing a name for your function expression quite effectively addresses all these draw-backs, but has no tangible downsides. The best practice is to always name your function expressions:
 
